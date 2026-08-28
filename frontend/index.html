@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeceptiGuard | AI Zero-Trust Sandbox & Multimodal Threat Intelligence</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🛡️</div>
+      <div>
+        <div class="brand-title">DECEPTIGUARD</div>
+        <div class="brand-subtitle">ZERO-TRUST AI SENTINEL</div>
+      </div>
+    </div>
+    
+    <div class="nav-status">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>ZERO-TRUST SANDBOX READY</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- STEP 1: INTAKE & UPLOAD VIEW -->
+    <section id="intakeSection" class="view-section active">
+      <div class="glass-panel">
+        <div class="section-badge">STEP 1 OF 3 • THREAT INTAKE & OCR DE-CLOAKING</div>
+        <h1 class="panel-heading">AI-Powered Phishing & Social Engineering Radar</h1>
+        <p class="panel-subtext">
+          Upload a screenshot of any suspicious email, SMS, or webpage for automated vision OCR text & URL segregation, or paste details manually.
+        </p>
+
+        <!-- OCR Image Upload Dropzone -->
+        <div class="dropzone-wrapper">
+          <div id="imageDropzone" class="image-dropzone">
+            <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+            <div id="dropzoneContent" class="dropzone-content">
+              <div class="dropzone-icon">📷</div>
+              <div class="dropzone-text">
+                <strong>Drop screenshot here or click to browse</strong>
+                <span>Supports PNG, JPG, WEBP • Auto-extracts visible text & segregates target URLs</span>
+              </div>
+            </div>
+            <div id="dropzoneLoading" class="dropzone-loading" style="display: none;">
+              <div class="spinner"></div>
+              <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--turquoise-neon);">
+                ⚡ Processing Image with Gemini Multimodal OCR...
+              </div>
+            </div>
+            <div id="dropzonePreview" class="dropzone-preview" style="display: none;">
+              <img id="previewThumbnail" src="" alt="Screenshot Preview" class="preview-img">
+              <div class="preview-info">
+                <div id="previewFilename" class="preview-name">screenshot.png</div>
+                <div id="ocrStatusBadge" class="ocr-badge">✓ Text & URL Segregated</div>
+                <button type="button" id="clearImageBtn" class="clear-img-btn">✕ Remove Image</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scan Form -->
+        <form id="scanForm" class="scan-form">
+          <div class="form-group">
+            <label class="form-label" for="targetUrl">
+              <span>🎯</span> TARGET SUSPICIOUS URL <small>(Auto-segregated from image or enter manually)</small>
+            </label>
+            <input type="url" id="targetUrl" class="cyber-input" placeholder="https://suspicious-portal.xyz/login.php" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contextMessage">
+              <span>✉️</span> EMAIL / SMS LURE MESSAGE TEXT <small>(Auto-extracted via OCR or paste below)</small>
+            </label>
+            <textarea id="contextMessage" class="cyber-textarea" placeholder="Paste accompanying email or SMS lure message (e.g. 'URGENT: Your account has been suspended within 2 hours. Verify identity now...')."></textarea>
+          </div>
+
+          <!-- Analyze / Scan Button (Turquoise Blue -> Hover Mid-Yellow) -->
+          <div class="button-container">
+            <button type="submit" id="submitBtn" class="cyber-scan-button">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-text">ANALYZE THREAT IN SANDBOX</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Presets -->
+        <div class="preset-pills">
+          <span class="preset-label">QUICK TEST PRESETS:</span>
+          <button type="button" class="preset-pill" onclick="setPreset('usps')">📦 Fake USPS Package Alert</button>
+          <button type="button" class="preset-pill" onclick="setPreset('ms365')">🚨 Fake Microsoft 365 Lure</button>
+          <button type="button" class="preset-pill" onclick="setPreset('paypal')">⚠️ Fake PayPal Security Alert</button>
+          <button type="button" class="preset-pill" onclick="setPreset('google')">🔒 Fake Google Workspace Portal</button>
+          <button type="button" class="preset-pill" onclick="setPreset('spanish')">🌐 Fake Bank Alert (Español)</button>
+          <button type="button" class="preset-pill" onclick="setPreset('safe')">✅ Safe Target (Wikipedia)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: SCANNING & FACTOR PROGRESS VIEW -->
+    <section id="radarPanel" class="view-section radar-panel">
+      <div class="glass-panel">
+        <div class="section-badge">STEP 2 OF 3 • REAL-TIME ZERO-TRUST FACTOR PIPELINE</div>
+        
+        <div class="radar-header">
+          <div id="radarStatusMsg" class="radar-status-title">Provisioning Zero-Trust isolated Chromium sandbox environment...</div>
+          <div class="socket-status-pill">LIVE WEBSOCKET STREAM</div>
+        </div>
+
+        <div class="radar-container">
+          <div class="radar-sweep-box">
+            <div class="radar-grid-line h"></div>
+            <div class="radar-grid-line v"></div>
+          </div>
+
+          <div class="pipeline-steps">
+            <div class="progress-bar-bg">
+              <div id="progressBarFill" class="progress-bar-fill"></div>
+            </div>
+            <div id="stepsList" class="steps-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: RESULTS & SANDBOX SIMULATION VIEW -->
+    <section id="dossierSection" class="view-section dossier-section">
+      
+      <!-- Top Actions Bar -->
+      <div class="dossier-actions-bar">
+        <button type="button" id="newScanBtn" class="secondary-button">
+          <span>←</span> Scan Another Target
+        </button>
+        <div id="detectedLanguageTag" class="language-badge">
+          <span>🌐</span> Language Detected: <strong id="detectedLanguageValue">English</strong>
+        </div>
+      </div>
+
+      <!-- Target Brand Warning Banner -->
+      <div id="targetBrandBanner" class="target-brand-banner" style="display: none;">
+        <div class="brand-warning-title">
+          <span>🚨</span> CRITICAL ZERO-DAY BRAND SPOOFING DETECTED: <span id="targetBrandName" style="color: #fff;"></span>
+        </div>
+        <div id="claimedVsActual" class="brand-subtext"></div>
+      </div>
+
+      <!-- Hero Risk Overview -->
+      <div class="dossier-hero">
+        <div class="glass-panel risk-gauge-card">
+          <div id="scoreCircle" class="score-circle">
+            <div id="riskScoreValue" class="score-value">0</div>
+            <div class="score-label">RISK LEVEL (%)</div>
+          </div>
+          <div id="threatBadge" class="threat-badge threat-SAFE">SAFE</div>
+          <div class="risk-meter-legend">
+            <span class="legend-dot green"></span> 0-30 Green
+            <span class="legend-dot yellow"></span> 31-65 Yellow
+            <span class="legend-dot red"></span> 66-100 Red
+          </div>
+        </div>
+
+        <div class="glass-panel executive-summary-card">
+          <div class="card-kicker">EXECUTIVE INTELLIGENCE DOSSIER</div>
+          <h2 id="dossierSummary" class="dossier-summary-text">
+            Evaluation complete.
+          </h2>
+          <div id="targetUrlDisplay" class="target-url-callout"></div>
+        </div>
+      </div>
+
+      <!-- 6 FACTORS BREAKDOWN GRID -->
+      <div class="factors-section">
+        <div class="factors-heading">
+          <span>📊</span> 6-FACTOR THREAT INTENT BREAKDOWN <small>(Explained in detected language)</small>
+        </div>
+
+        <div class="factors-grid">
+          <!-- Factor 1: Message Suspicion -->
+          <div id="cardFactorMsg" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">✉️</div>
+              <div>
+                <div class="factor-name">Message Suspicion</div>
+                <div id="badgeFactorMsg" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorMsg" class="factor-title">Urgency & Pretexting</div>
+            <p id="expFactorMsg" class="factor-explanation"></p>
+            <div id="highlightFactorMsg" class="factor-tag">Normal Tone</div>
+          </div>
+
+          <!-- Factor 2: URL Domain Name -->
+          <div id="cardFactorDom" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">🌐</div>
+              <div>
+                <div class="factor-name">URL Domain Name</div>
+                <div id="badgeFactorDom" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorDom" class="factor-title">Domain Host Analysis</div>
+            <p id="expFactorDom" class="factor-explanation"></p>
+            <div id="highlightFactorDom" class="factor-tag">Host Structure</div>
+          </div>
+
+          <!-- Factor 3: URL Legitness -->
+          <div id="cardFactorLegit" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">🔒</div>
+              <div>
+                <div class="factor-name">URL Legitness</div>
+                <div id="badgeFactorLegit" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorLegit" class="factor-title">Protocol & Redirect Chain</div>
+            <p id="expFactorLegit" class="factor-explanation"></p>
+            <div id="highlightFactorLegit" class="factor-tag">Verified SSL</div>
+          </div>
+
+          <!-- Factor 4: Brand Spoofing -->
+          <div id="cardFactorSpoof" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">🎭</div>
+              <div>
+                <div class="factor-name">Brand Spoofing</div>
+                <div id="badgeFactorSpoof" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorSpoof" class="factor-title">Visual Brand Dissonance</div>
+            <p id="expFactorSpoof" class="factor-explanation"></p>
+            <div id="highlightFactorSpoof" class="factor-tag">No Impersonation</div>
+          </div>
+
+          <!-- Factor 5: Malicious Intent -->
+          <div id="cardFactorIntent" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">⚡</div>
+              <div>
+                <div class="factor-name">Malicious Intent</div>
+                <div id="badgeFactorIntent" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorIntent" class="factor-title">Attack Vector Classification</div>
+            <p id="expFactorIntent" class="factor-explanation"></p>
+            <div id="highlightFactorIntent" class="factor-tag">Benign Traffic</div>
+          </div>
+
+          <!-- Factor 6: Deceptive Claims -->
+          <div id="cardFactorClaims" class="glass-panel factor-card">
+            <div class="factor-header">
+              <div class="factor-icon">🚨</div>
+              <div>
+                <div class="factor-name">Deceptive Claims</div>
+                <div id="badgeFactorClaims" class="factor-badge">SAFE</div>
+              </div>
+            </div>
+            <div id="titleFactorClaims" class="factor-title">False Pretexts & Expiration Lures</div>
+            <p id="expFactorClaims" class="factor-explanation"></p>
+            <div id="highlightFactorClaims" class="factor-tag">Clean Content</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SANDBOX SIMULATION & TELEMETRY SECTION -->
+      <div class="sandbox-simulation-section">
+        <div class="dossier-grid">
+          <!-- Rendered Screenshot View -->
+          <div class="glass-panel">
+            <div class="card-title">
+              <span>📷</span> SANDBOX VIEWPORT SIMULATION RENDER (1280x800)
+            </div>
+            <div class="screenshot-container">
+              <img id="screenshotImg" class="screenshot-preview" src="" alt="Sandboxed Viewport Simulation Render" />
+            </div>
+          </div>
+
+          <!-- Technical Sandbox Indicators -->
+          <div class="glass-panel">
+            <div class="card-title">
+              <span>🔬</span> SANDBOX TELEMETRY & DOM DE-CLOAKING
+            </div>
+            <div id="telemetryDetails" class="telemetry-box">
+              <div class="telemetry-item">
+                <span class="t-label">SSL Transport Security:</span>
+                <span id="tSsl" class="t-value">Valid HTTPS</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="t-label">Interactive Forms Detected:</span>
+                <span id="tForms" class="t-value">0</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="t-label">Password Harvesting Fields:</span>
+                <span id="tPass" class="t-value">0</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="t-label">Redirect Chain Hops:</span>
+                <span id="tRedirects" class="t-value">0</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="t-label">Hidden JavaScript Obfuscation:</span>
+                <span id="tObfuscation" class="t-value">None</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.25rem;">
+              <div class="card-subhead">MULTIMODAL VISION ASSESSMENT</div>
+              <ul id="visualAnalysisList" class="analysis-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Honeypot Countermeasure Log -->
+      <div id="honeypotCard" class="glass-panel honeypot-card" style="display: none;">
+        <div class="card-title honeypot-title">
+          <span>🪤</span> ACTIVE PLAYWRIGHT HONEYPOT DECOY COUNTERMEASURE LOG
+        </div>
+        
+        <p class="honeypot-subtext">
+          Zero-Trust active tarpitting deployed. High-fidelity synthetic decoy credentials matching the target brand conventions were automatically injected into attacker forms to exhaust resources.
+        </p>
+
+        <div class="resource-wasted-badge">
+          <span>⏱️ ATTACKER RESOURCE WASTED:</span>
+          <span id="wastedTimeValue">0.0s</span>
+        </div>
+
+        <table class="creds-table">
+          <thead>
+            <tr>
+              <th>CREDENTIAL FIELD</th>
+              <th>INJECTED SYNTHETIC DECOY VALUE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Decoy Username / Email</td>
+              <td><span id="injectedUsername" class="creds-value"></span></td>
+            </tr>
+            <tr>
+              <td>Decoy Complex Password</td>
+              <td><span id="injectedPassword" class="creds-value"></span></td>
+            </tr>
+            <tr>
+              <td>Synthetic 6-Digit MFA / OTP</td>
+              <td><span id="injectedMfa" class="creds-value"></span></td>
+            </tr>
+            <tr>
+              <td>Target Malicious Endpoint</td>
+              <td id="honeypotEndpoint" style="color: var(--text-dim);"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Threat Scan History Archive -->
+      <div class="history-section">
+        <div class="glass-panel">
+          <div class="card-title">
+            <span>📜</span> THREAT INTELLIGENCE SCAN HISTORY
+          </div>
+          
+          <div class="table-responsive">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>RISK LEVEL</th>
+                  <th>SCORE</th>
+                  <th>TARGET URL</th>
+                  <th>SPOOFED BRAND</th>
+                  <th>LANGUAGE</th>
+                  <th>HONEYPOT STATUS</th>
+                  <th>TIMESTAMP</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JS -->
+  <script src="js/websocket.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
